@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Финансы</string>
+    <string name="home_screen">Домой</string>
+    <string name="history_screen">История</string>
+    <string name="diagram_screen">Диаграмма</string>
+    <string name="settings_screen">Настройки</string>
+    <string name="income">Доход</string>
+    <string name="expense">Расход</string>
+    <string name="sum">Сумма</string>
+    <string name="choose_date">Выбрать дату</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
+    <string name="input_error">Заполните все поля</string>
+    <string name="filter_all">Все</string>
+    <string name="yes">Да</string>
+    <string name="alert_dialog_title">Подтверждение</string>
+    <string name="alert_dialog_message">Вы уверены что хотите удалить все записи?</string>
+</resources>

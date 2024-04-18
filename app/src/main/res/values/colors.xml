@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="light_gray">@android:color/system_neutral1_300</color>
+    <color name="gray">@android:color/system_neutral1_400</color>
+    <color name="green">#00C853</color>
+    <color name="red">#D50000</color>
+    <color name="purple">#6200EA</color>
 </resources>
