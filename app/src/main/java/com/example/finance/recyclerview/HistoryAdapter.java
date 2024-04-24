@@ -16,7 +16,7 @@ import com.example.finance.R;
 
 import java.util.List;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     private List<HistoryItem> items;
     public HistoryAdapter(List<HistoryItem> items){
         this.items = items;

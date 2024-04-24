@@ -2,10 +2,13 @@ package com.example.finance;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.example.finance.database.HistoryDatabase;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 .databaseBuilder(getApplicationContext(), HistoryDatabase.class, "History")
                 .allowMainThreadQueries()
                 .build();
+
 
         Fragment homeScreen = new HomeScreenFragment();
         Bundle homeScreenBundle = new Bundle();

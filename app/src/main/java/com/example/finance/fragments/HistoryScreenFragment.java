@@ -4,8 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.finance.R;
 import com.example.finance.database.HistoryDatabase;
@@ -94,6 +97,9 @@ public class HistoryScreenFragment extends Fragment {
         }
 
         HistoryAdapter historyAdapter = new HistoryAdapter(historyItems);
+
+        ItemTouchHelper itemTouchHelper = getItemTouchHelper(historyItems, historyAdapter);
+        itemTouchHelper.attachToRecyclerView(history);
         history.setAdapter(historyAdapter);
         RootView.findViewById(R.id.filter_all).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,5 +156,25 @@ public class HistoryScreenFragment extends Fragment {
         });
 
         return RootView;
+    }
+
+    @NonNull
+    private ItemTouchHelper getItemTouchHelper(List<HistoryItem> historyItems, HistoryAdapter historyAdapter) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int position = viewHolder.getAdapterPosition();
+                db.historyItemDAO().delete(historyItems.get(position));
+                historyItems.remove(position);
+                historyAdapter.notifyItemRemoved(position);
+            }
+        };
+
+        return new ItemTouchHelper(simpleItemTouchCallback);
     }
 }

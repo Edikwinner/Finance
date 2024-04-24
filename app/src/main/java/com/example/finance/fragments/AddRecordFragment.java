@@ -3,9 +3,11 @@ package com.example.finance.fragments;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +22,12 @@ import android.widget.Toast;
 
 import com.example.finance.R;
 import com.example.finance.database.HistoryDatabase;
+import com.example.finance.database.HistoryItemDAO;
 import com.example.finance.recyclerview.HistoryItem;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 
 //TODO Нормальный интерфейс
@@ -58,11 +62,13 @@ public class AddRecordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_add_record, container, false);
+
         SwitchCompat switchCompat = RootView.findViewById(R.id.switch_compat);
         TextView label = RootView.findViewById(R.id.label);
         EditText sum = RootView.findViewById(R.id.sum);
         Spinner category = RootView.findViewById(R.id.category);
-        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.income, android.R.layout.simple_spinner_item);
+
+        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.income, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
         HistoryItem item = new HistoryItem();
@@ -140,18 +146,46 @@ public class AddRecordFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 item.setOperationCost(sum.getText().toString());
-                if(item.getOperationCost() == null | item.getOperationDate() == null){
-                    Toast.makeText(getContext(), getResources().getText(R.string.input_error), Toast.LENGTH_SHORT).show();
+                if(item.getOperationDate() == null){
+
                 }
                 else {
-                    db.historyItemDAO().insert(item);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, new HomeScreenFragment())
-                            .commit();
+                    if(!isCorrectItem(item)) {
+                        Toast.makeText(getContext(), getResources().getText(R.string.input_error), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        db.historyItemDAO().insert(item);
+                        Fragment homeScreen = new HomeScreenFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Database", db);
+                        homeScreen.setArguments(bundle);
+                        getFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, homeScreen)
+                                .commit();
+                    }
                 }
             }
         });
 
         return RootView;
+    }
+    public boolean isCorrectItem(HistoryItem item){
+        if(item.getOperationCost().startsWith("0")){
+            if(!item.getOperationCost().substring(1).startsWith(",")){
+                item.setOperationCost(item.getOperationCost().substring(1));
+            }
+        }
+        if(item.getOperationCost().contains(",")) {
+            if (item.getOperationCost().matches("^\\d{1,},\\d{1,2}$")) {
+                if (item.getOperationCost().matches("^\\d{1,},\\d{1}$")) {
+                    item.setOperationCost(item.getOperationCost() + "0");
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
     }
 }

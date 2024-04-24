@@ -53,4 +53,5 @@ public class HistoryItem {
     public Boolean getIncome() {
         return income;
     }
+
 }

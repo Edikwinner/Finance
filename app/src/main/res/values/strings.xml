@@ -25,6 +25,9 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+    <string-array name="currency">
+        <item>$</item>
+    </string-array>
     
     
 </resources>
