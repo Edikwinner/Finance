@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.finance.R;
@@ -40,6 +41,7 @@ public class HistoryScreenFragment extends Fragment {
 
     HistoryDatabase db;
     RecyclerView history;
+    View RootView;
 
 
     public HistoryScreenFragment() {
@@ -70,7 +72,7 @@ public class HistoryScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View RootView = inflater
+        RootView = inflater
                 .inflate(R.layout.fragment_history_screen, container, false);
 
         ImageButton deleteAll = RootView.findViewById(R.id.delete_all);
@@ -195,7 +197,7 @@ public class HistoryScreenFragment extends Fragment {
 
                 db.historyItemDAO().delete(item);
 
-                Snackbar snackbar = Snackbar.make(getView(), getResources()
+                Snackbar snackbar = Snackbar.make(RootView, getResources()
                         .getText(R.string.snackbar_title), Snackbar.LENGTH_LONG);
                 snackbar.setAction(getResources().getText(R.string.undo), new View.OnClickListener() {
                     @Override
@@ -210,7 +212,6 @@ public class HistoryScreenFragment extends Fragment {
                         }
                     }
                 });
-
                 snackbar.show();
             }
         };
