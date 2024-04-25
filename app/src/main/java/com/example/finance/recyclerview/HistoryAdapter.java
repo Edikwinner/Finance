@@ -38,11 +38,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         if(item.getIncome()) {
             holder.operation_cost.setTextColor(Color.parseColor("#00C853"));
-            holder.operation_cost.setText("+" + item.getOperationCost());
+            holder.operation_cost.setText("+" + item.getOperationCost() + " " + item.getOperationCurrency());
         }
         else {
             holder.operation_cost.setTextColor(Color.parseColor("#D50000"));
-            holder.operation_cost.setText("-" + item.getOperationCost());
+            holder.operation_cost.setText("-" + item.getOperationCost() + " " + item.getOperationCurrency());
         }
     }
 

@@ -29,6 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/sum" />
+    <Spinner
+        android:id="@+id/currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
   </LinearLayout>
   <Spinner
       android:id="@+id/category"
@@ -39,15 +43,22 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:hint="@string/choose_date"/>
-  <Button
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"/>
+    <Button
       android:id="@+id/add_record"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/add"/>
-  <Button
-      android:id="@+id/cancel"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cancel"/>
+
+  </LinearLayout>
+
 
 </LinearLayout>

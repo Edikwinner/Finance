@@ -12,6 +12,7 @@ public class HistoryItem {
     private String operationName;
     private String operationCost;
     private String operationDate;
+    private String operationCurrency;
     public HistoryItem(String operationName, String operationCost, String operationDate, Boolean income){
         this.operationName = operationName;
         this.operationCost = operationCost;
@@ -38,6 +39,10 @@ public class HistoryItem {
         this.income = income;
     }
 
+    public void setOperationCurrency(String operationCurrency) {
+        this.operationCurrency = operationCurrency;
+    }
+
     public String getOperationName() {
         return operationName;
     }
@@ -54,4 +59,7 @@ public class HistoryItem {
         return income;
     }
 
+    public String getOperationCurrency() {
+        return operationCurrency;
+    }
 }

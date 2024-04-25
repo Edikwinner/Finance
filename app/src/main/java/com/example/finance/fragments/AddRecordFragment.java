@@ -1,9 +1,8 @@
 package com.example.finance.fragments;
 
-import android.app.DatePickerDialog;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,12 +20,9 @@ import android.widget.Toast;
 
 import com.example.finance.R;
 import com.example.finance.database.HistoryDatabase;
-import com.example.finance.database.HistoryItemDAO;
 import com.example.finance.recyclerview.HistoryItem;
-
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Objects;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 
 //TODO Нормальный интерфейс
@@ -66,11 +61,17 @@ public class AddRecordFragment extends Fragment {
         SwitchCompat switchCompat = RootView.findViewById(R.id.switch_compat);
         TextView label = RootView.findViewById(R.id.label);
         EditText sum = RootView.findViewById(R.id.sum);
-        Spinner category = RootView.findViewById(R.id.category);
 
-        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.income, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        category.setAdapter(adapter);
+        Spinner category = RootView.findViewById(R.id.category);
+        ArrayAdapter<?> categoryAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.income, android.R.layout.simple_spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category.setAdapter(categoryAdapter);
+
+        Spinner currency = RootView.findViewById(R.id.currency);
+        ArrayAdapter<?> currencyAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.currency, android.R.layout.simple_spinner_item);
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        currency.setAdapter(currencyAdapter);
+
         HistoryItem item = new HistoryItem();
         item.setIncome(true);
 
@@ -85,6 +86,19 @@ public class AddRecordFragment extends Fragment {
                     choose = getResources().getStringArray(R.array.expense);
                 }
                 item.setOperationName(choose[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        currency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] choose = getResources().getStringArray(R.array.currency);
+                item.setOperationCurrency(choose[position]);
             }
 
             @Override
@@ -115,23 +129,20 @@ public class AddRecordFragment extends Fragment {
         });
 
         RootView.findViewById(R.id.to_date_picker).setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext());
-                datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().build();
+                datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    public void onPositiveButtonClick(Object o) {
                         TextView textView = RootView.findViewById(R.id.to_date_picker);
-                        Calendar mCalendar = Calendar.getInstance();
-                        mCalendar.set(Calendar.YEAR, year);
-                        mCalendar.set(Calendar.MONTH, month);
-                        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        String selectedDate = DateFormat.getDateInstance(DateFormat.DEFAULT).format(mCalendar.getTime());
+                        String selectedDate = datePicker.getHeaderText();
                         item.setOperationDate(selectedDate);
                         textView.setText(selectedDate);
                     }
                 });
-                datePickerDialog.show();
+                datePicker.show(getFragmentManager(), "");
             }
         });
         RootView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
@@ -147,13 +158,18 @@ public class AddRecordFragment extends Fragment {
             public void onClick(View v) {
                 item.setOperationCost(sum.getText().toString());
                 if(item.getOperationDate() == null){
-
+                    Toast.makeText(getContext(), getResources().getText(R.string.input_error), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     if(!isCorrectItem(item)) {
                         Toast.makeText(getContext(), getResources().getText(R.string.input_error), Toast.LENGTH_SHORT).show();
                     }
                     else {
+                        Log.i("TAG", item.getOperationName());
+                        Log.i("TAG", item.getOperationCost());
+                        Log.i("TAG", item.getOperationCurrency());
+                        Log.i("TAG", item.getOperationDate());
+                        Log.i("TAG", item.getIncome().toString());
                         db.historyItemDAO().insert(item);
                         Fragment homeScreen = new HomeScreenFragment();
                         Bundle bundle = new Bundle();
@@ -171,6 +187,9 @@ public class AddRecordFragment extends Fragment {
         return RootView;
     }
     public boolean isCorrectItem(HistoryItem item){
+        if(item.getOperationCost().equals("") || item.getOperationCost() == null){
+            return false;
+        }
         if(item.getOperationCost().startsWith("0")){
             if(!item.getOperationCost().substring(1).startsWith(",")){
                 item.setOperationCost(item.getOperationCost().substring(1));
