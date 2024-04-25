@@ -21,35 +21,40 @@
             app:layout_constraintEnd_toEndOf="@id/delete_all"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent">
-
-            <Button
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:singleSelection="true"
+        style="@style/Widget.Material3.Chip.Filter">
+            <com.google.android.material.chip.Chip
                 android:id="@+id/filter_all"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="2"
                 android:text="@string/filter_all"
                 android:padding="5dp"
-                android:textSize="24sp" />
-
-            <Button
+                android:textSize="20sp"
+                style="@style/Widget.Material3.Chip.Filter"/>
+            <com.google.android.material.chip.Chip
                 android:id="@+id/filter_income"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="3"
                 android:text="@string/income"
                 android:padding="5dp"
-                android:textSize="24sp" />
+                android:textSize="20sp"
+                style="@style/Widget.Material3.Chip.Filter"/>
 
-            <Button
+            <com.google.android.material.chip.Chip
                 android:id="@+id/filter_expense"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
                 android:text="@string/expense"
                 android:padding="5dp"
-                android:textSize="24sp" />
+                android:textSize="20sp"
+                style="@style/Widget.Material3.Chip.Filter"/>
+</com.google.android.material.chip.ChipGroup>
         </LinearLayout>
 
         <ImageButton

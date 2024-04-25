@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.example.finance.R;
 import com.example.finance.database.HistoryDatabase;
 import com.example.finance.recyclerview.HistoryAdapter;
 import com.example.finance.recyclerview.HistoryItem;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +107,7 @@ public class HistoryScreenFragment extends Fragment {
         RootView.findViewById(R.id.filter_all).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 HistoryAdapter historyAdapter = new HistoryAdapter(historyItems);
                 history.setAdapter(historyAdapter);
             }
