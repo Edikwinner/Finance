@@ -105,9 +105,15 @@ public class HomeScreenFragment extends Fragment {
             }
         }
 
-        balanceText.append(Math.ceil(rubleBalance * 100) / 100).append(" ₽").append('\n');
-        balanceText.append(Math.ceil(dollarBalance * 100) / 100).append(" $").append('\n');
-        balanceText.append(Math.ceil(euroBalance * 100) / 100).append(" €");
+        if(rubleBalance != 0.0) {
+            balanceText.append(Math.ceil(rubleBalance * 100) / 100).append(" ₽").append('\n');
+        }
+        if(dollarBalance != 0.0) {
+            balanceText.append(Math.ceil(dollarBalance * 100) / 100).append(" $").append('\n');
+        }
+        if(euroBalance != 0.0) {
+            balanceText.append(Math.ceil(euroBalance * 100) / 100).append(" €");
+        }
 
         RootView.findViewById(R.id.to_add_fragment).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,6 +17,8 @@
     <string name="alert_dialog_message">Delete all the records?</string>
     <string name="balance">Balance</string>
     <string name="incorrect_input">Enter corrent value</string>
+    <string name="undo">Undo</string>
+    <string name="snackbar_title">Element deleted</string>
     <string-array name="income">
         <item>1</item>
         <item>2</item>

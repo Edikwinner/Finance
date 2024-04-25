@@ -26,6 +26,7 @@ import com.example.finance.recyclerview.HistoryItem;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +96,7 @@ public class HistoryScreenFragment extends Fragment {
         HistoryAdapter historyAdapter = new HistoryAdapter(historyItems);
 
         ItemTouchHelper historyItemsTouchHelper = getItemTouchHelper(historyItems,
-                incomeItems, expenseItems, historyAdapter);
+                incomeItems, expenseItems, historyAdapter, incomeAdapter, expenseAdapter);
         historyItemsTouchHelper.attachToRecyclerView(history);
         history.setAdapter(historyAdapter);
 
@@ -103,18 +104,21 @@ public class HistoryScreenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 history.setAdapter(historyAdapter);
+                historyItemsTouchHelper.attachToRecyclerView(history);
             }
         });
         RootView.findViewById(R.id.filter_income).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 history.setAdapter(incomeAdapter);
+                historyItemsTouchHelper.attachToRecyclerView(null);
             }
         });
         RootView.findViewById(R.id.filter_expense).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 history.setAdapter(expenseAdapter);
+                historyItemsTouchHelper.attachToRecyclerView(null);
             }
         });
 
@@ -158,7 +162,9 @@ public class HistoryScreenFragment extends Fragment {
     private ItemTouchHelper getItemTouchHelper(List<HistoryItem> historyItems,
                                                List<HistoryItem> incomeItems,
                                                List<HistoryItem> expenseItems,
-                                               HistoryAdapter historyAdapter) {
+                                               HistoryAdapter historyAdapter,
+                                               HistoryAdapter incomeAdapter,
+                                               HistoryAdapter expenseAdapter) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback
                 = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -172,15 +178,40 @@ public class HistoryScreenFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
-                db.historyItemDAO().delete(historyItems.get(position));
-                if(historyItems.get(position).getIncome()){
-                    incomeItems.remove(historyItems.get(position));
+                HistoryItem item = historyItems.get(position);
+                int incomePosition = incomeItems.indexOf(item);
+                int expansePosition = expenseItems.indexOf(item);
+                historyItems.remove(item);
+                if(item.getIncome()){
+                    incomeItems.remove(item);
+                    incomeAdapter.notifyItemRemoved(incomePosition);
                 }
                 else{
-                    expenseItems.remove(historyItems.get(position));
+                    expenseItems.remove(item);
+                    expenseAdapter.notifyItemRemoved(expansePosition);
                 }
-                historyItems.remove(position);
                 historyAdapter.notifyItemRemoved(position);
+
+
+                db.historyItemDAO().delete(item);
+
+                Snackbar snackbar = Snackbar.make(getView(), getResources()
+                        .getText(R.string.snackbar_title), Snackbar.LENGTH_LONG);
+                snackbar.setAction(getResources().getText(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        db.historyItemDAO().insert(item);
+                        historyAdapter.restoreItem(item, position);
+                        if(item.getIncome()){
+                            incomeAdapter.restoreItem(item, incomePosition);
+                        }
+                        else{
+                            expenseAdapter.restoreItem(item, expansePosition);
+                        }
+                    }
+                });
+
+                snackbar.show();
             }
         };
 

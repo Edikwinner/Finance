@@ -152,8 +152,12 @@ public class AddRecordFragment extends Fragment {
         RootView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HomeScreenFragment homeScreenFragment = new HomeScreenFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Database", db);
+                homeScreenFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new HomeScreenFragment())
+                        .replace(R.id.fragment_container,homeScreenFragment)
                         .commit();
             }
         });

@@ -50,6 +50,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public int getItemCount() {
         return items.size();
     }
+    public void restoreItem(HistoryItem item, int position) {
+        items.add(position, item);
+        notifyItemInserted(position);
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView operation_name;

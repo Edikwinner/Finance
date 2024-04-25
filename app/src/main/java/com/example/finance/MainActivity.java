@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
+
         Fragment homeScreen = new HomeScreenFragment();
         Bundle homeScreenBundle = new Bundle();
         homeScreenBundle.putSerializable("Database", db);
