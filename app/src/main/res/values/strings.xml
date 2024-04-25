@@ -14,7 +14,9 @@
     <string name="filter_all">All</string>
     <string name="yes">Yes</string>
     <string name="alert_dialog_title">Confirmation</string>
-    <string name="alert_dialog_message">Are you sure you want to delete all the records?</string>
+    <string name="alert_dialog_message">Delete all the records?</string>
+    <string name="balance">Balance</string>
+    <string name="incorrect_input">Enter corrent value</string>
     <string-array name="income">
         <item>1</item>
         <item>2</item>
@@ -25,7 +27,7 @@
         <item>5</item>
         <item>6</item>
     </string-array>
-    <string-array name="currency">
+    <string-array name="currency" translatable="false">
         <item>₽</item>
         <item>$</item>
         <item>€</item>

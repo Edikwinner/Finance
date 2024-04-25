@@ -13,11 +13,12 @@ public class HistoryItem {
     private String operationCost;
     private String operationDate;
     private String operationCurrency;
-    public HistoryItem(String operationName, String operationCost, String operationDate, Boolean income){
+    public HistoryItem(String operationName, String operationCost, String operationDate, Boolean income, String operationCurrency){
         this.operationName = operationName;
         this.operationCost = operationCost;
         this.operationDate = operationDate;
         this.income = income;
+        this.operationCurrency = operationCurrency;
     }
     public HistoryItem(){
 

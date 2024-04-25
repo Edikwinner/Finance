@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.finance.R;
 import com.example.finance.database.HistoryDatabase;
 import com.example.finance.recyclerview.HistoryItem;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
@@ -58,8 +59,6 @@ public class AddRecordFragment extends Fragment {
                              Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_add_record, container, false);
 
-        SwitchCompat switchCompat = RootView.findViewById(R.id.switch_compat);
-        TextView label = RootView.findViewById(R.id.label);
         EditText sum = RootView.findViewById(R.id.sum);
 
         Spinner category = RootView.findViewById(R.id.category);
@@ -74,6 +73,28 @@ public class AddRecordFragment extends Fragment {
 
         HistoryItem item = new HistoryItem();
         item.setIncome(true);
+
+        MaterialButton income = RootView.findViewById(R.id.income);
+        income.setChecked(true);
+        MaterialButton expense = RootView.findViewById(R.id.expense);
+        income.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.setIncome(true);
+                ArrayAdapter<?> categoryAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.income, android.R.layout.simple_spinner_item);
+                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                category.setAdapter(categoryAdapter);
+            }
+        });
+        expense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.setIncome(false);
+                ArrayAdapter<?> categoryAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.expense, android.R.layout.simple_spinner_item);
+                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                category.setAdapter(categoryAdapter);
+            }
+        });
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -107,32 +128,15 @@ public class AddRecordFragment extends Fragment {
             }
         });
 
-
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked){
-                    label.setText(getResources().getText(R.string.income));
-                    ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.income, android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    category.setAdapter(adapter);
-                    item.setIncome(true);
-                }
-                else{
-                    label.setText(getResources().getText(R.string.expense));
-                    ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.expense, android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    category.setAdapter(adapter);
-                    item.setIncome(false);
-                }
-            }
-        });
-
         RootView.findViewById(R.id.to_date_picker).setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().build();
+                MaterialDatePicker<Long> datePicker = MaterialDatePicker
+                        .Builder
+                        .datePicker()
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .build();
                 datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                     @Override
                     public void onPositiveButtonClick(Object o) {
@@ -162,14 +166,9 @@ public class AddRecordFragment extends Fragment {
                 }
                 else {
                     if(!isCorrectItem(item)) {
-                        Toast.makeText(getContext(), getResources().getText(R.string.input_error), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getResources().getText(R.string.incorrect_input), Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Log.i("TAG", item.getOperationName());
-                        Log.i("TAG", item.getOperationCost());
-                        Log.i("TAG", item.getOperationCurrency());
-                        Log.i("TAG", item.getOperationDate());
-                        Log.i("TAG", item.getIncome().toString());
                         db.historyItemDAO().insert(item);
                         Fragment homeScreen = new HomeScreenFragment();
                         Bundle bundle = new Bundle();
@@ -187,17 +186,17 @@ public class AddRecordFragment extends Fragment {
         return RootView;
     }
     public boolean isCorrectItem(HistoryItem item){
-        if(item.getOperationCost().equals("") || item.getOperationCost() == null){
+        if(item.getOperationCost().isEmpty() || item.getOperationCost() == null){
             return false;
         }
         if(item.getOperationCost().startsWith("0")){
-            if(!item.getOperationCost().substring(1).startsWith(",")){
+            if(!item.getOperationCost().substring(1).startsWith(".")){
                 item.setOperationCost(item.getOperationCost().substring(1));
             }
         }
-        if(item.getOperationCost().contains(",")) {
-            if (item.getOperationCost().matches("^\\d{1,},\\d{1,2}$")) {
-                if (item.getOperationCost().matches("^\\d{1,},\\d{1}$")) {
+        if(item.getOperationCost().contains(".")) {
+            if (item.getOperationCost().matches("^\\d{1,}.\\d{1,2}$")) {
+                if (item.getOperationCost().matches("^\\d{1,}.\\d{1}$")) {
                     item.setOperationCost(item.getOperationCost() + "0");
                 }
             }

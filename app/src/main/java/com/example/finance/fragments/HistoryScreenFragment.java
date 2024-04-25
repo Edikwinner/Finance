@@ -1,5 +1,6 @@
 package com.example.finance.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.example.finance.recyclerview.HistoryAdapter;
 import com.example.finance.recyclerview.HistoryItem;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,18 +37,11 @@ import java.util.List;
  */
 public class HistoryScreenFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     HistoryDatabase db;
+    RecyclerView history;
+
 
     public HistoryScreenFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -57,39 +52,33 @@ public class HistoryScreenFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment HistoryScreenFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HistoryScreenFragment newInstance(String param1, String param2) {
-        HistoryScreenFragment fragment = new HistoryScreenFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new HistoryScreenFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
             db = (HistoryDatabase) getArguments().get("Database");
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View RootView = inflater.inflate(R.layout.fragment_history_screen, container, false);
+        View RootView = inflater
+                .inflate(R.layout.fragment_history_screen, container, false);
+
         ImageButton deleteAll = RootView.findViewById(R.id.delete_all);
-        RecyclerView history = RootView.findViewById(R.id.history);
+        history = RootView.findViewById(R.id.history);
 
-        history.setLayoutManager(new LinearLayoutManager(getContext()));
         List<HistoryItem> historyItems = db.historyItemDAO().getAll();
-
         List<HistoryItem> incomeItems = new ArrayList<>();
         List<HistoryItem> expenseItems = new ArrayList<>();
+
         for(int i = 0;i < historyItems.size();i++){
             if(historyItems.get(i).getIncome()){
                 incomeItems.add(historyItems.get(i));
@@ -99,33 +88,36 @@ public class HistoryScreenFragment extends Fragment {
             }
         }
 
+        history.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        HistoryAdapter incomeAdapter = new HistoryAdapter(incomeItems);
+        HistoryAdapter expenseAdapter = new HistoryAdapter(expenseItems);
         HistoryAdapter historyAdapter = new HistoryAdapter(historyItems);
 
-        ItemTouchHelper itemTouchHelper = getItemTouchHelper(historyItems, historyAdapter);
-        itemTouchHelper.attachToRecyclerView(history);
+        ItemTouchHelper historyItemsTouchHelper = getItemTouchHelper(historyItems,
+                incomeItems, expenseItems, historyAdapter);
+        historyItemsTouchHelper.attachToRecyclerView(history);
         history.setAdapter(historyAdapter);
+
         RootView.findViewById(R.id.filter_all).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                HistoryAdapter historyAdapter = new HistoryAdapter(historyItems);
                 history.setAdapter(historyAdapter);
             }
         });
         RootView.findViewById(R.id.filter_income).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HistoryAdapter incomeAdapter = new HistoryAdapter(incomeItems);
                 history.setAdapter(incomeAdapter);
             }
         });
         RootView.findViewById(R.id.filter_expense).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HistoryAdapter expenseAdapter = new HistoryAdapter(expenseItems);
                 history.setAdapter(expenseAdapter);
             }
         });
+
         if (historyItems.isEmpty()) {
             history.setVisibility(View.INVISIBLE);
         } else {
@@ -136,10 +128,10 @@ public class HistoryScreenFragment extends Fragment {
         deleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
                 builder.setTitle(getResources().getString(R.string.alert_dialog_title))
                         .setMessage(getResources().getString(R.string.alert_dialog_message))
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(getResources().getDrawable(R.drawable.warning))
                         .setPositiveButton(getResources().getText(R.string.yes), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -163,17 +155,30 @@ public class HistoryScreenFragment extends Fragment {
     }
 
     @NonNull
-    private ItemTouchHelper getItemTouchHelper(List<HistoryItem> historyItems, HistoryAdapter historyAdapter) {
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+    private ItemTouchHelper getItemTouchHelper(List<HistoryItem> historyItems,
+                                               List<HistoryItem> incomeItems,
+                                               List<HistoryItem> expenseItems,
+                                               HistoryAdapter historyAdapter) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback
+                = new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
                 db.historyItemDAO().delete(historyItems.get(position));
+                if(historyItems.get(position).getIncome()){
+                    incomeItems.remove(historyItems.get(position));
+                }
+                else{
+                    expenseItems.remove(historyItems.get(position));
+                }
                 historyItems.remove(position);
                 historyAdapter.notifyItemRemoved(position);
             }

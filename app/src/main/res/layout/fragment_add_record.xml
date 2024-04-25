@@ -1,32 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.AddRecordFragment"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:padding="30dp">
+  <com.google.android.material.button.MaterialButtonToggleGroup
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      app:singleSelection="true"
+      android:layout_marginBottom="40dp">
+      <com.google.android.material.button.MaterialButton
 
-  <androidx.appcompat.widget.SwitchCompat
-      android:id="@+id/switch_compat"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
-  <TextView
-      android:id="@+id/label"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/income"/>
+          android:textSize="24sp"
+          android:id="@+id/income"
+          android:gravity="center"
+          android:text="@string/income"
+          style="@style/Widget.Material3.Button.OutlinedButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
+     <Button
+         android:textSize="24sp"
+         android:id="@+id/expense"
+         android:gravity="center"
+         android:text="@string/expense"
+         style="@style/Widget.Material3.Button.OutlinedButton"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"/>
+  </com.google.android.material.button.MaterialButtonToggleGroup>
+
   <LinearLayout
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      android:gravity="center"
+      android:layout_marginBottom="40dp">
     <EditText
+        android:gravity="center"
         android:inputType="number"
         android:id="@+id/sum"
-        android:digits="1234567890,"
+        android:digits="1234567890."
         android:maxLength="10"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:hint="@string/sum" />
     <Spinner
@@ -37,26 +56,31 @@
   <Spinner
       android:id="@+id/category"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="40dp"/>
   <Button
+      android:textColorHint="@color/black"
       android:id="@+id/to_date_picker"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:hint="@string/choose_date"/>
+      android:hint="@string/choose_date"
+      android:layout_marginBottom="40dp"/>
   <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      android:gravity="center">
     <Button
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"/>
+        android:text="@string/cancel"
+        android:layout_marginEnd="20dp"/>
     <Button
-      android:id="@+id/add_record"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/add"/>
+        android:id="@+id/add_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add"/>
 
   </LinearLayout>
 

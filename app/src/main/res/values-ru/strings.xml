@@ -16,4 +16,23 @@
     <string name="yes">Да</string>
     <string name="alert_dialog_title">Подтверждение</string>
     <string name="alert_dialog_message">Вы уверены что хотите удалить все записи?</string>
+    <string name="balance">Баланс</string>
+    <string name="incorrect_input">Введите корректное значение</string>
+    <string-array name="income">
+        <item>Заработная плата</item>
+        <item>Дивиденды</item>
+        <item>Подарок</item>
+        <item>Проценты по вкладу</item>
+    </string-array>
+    <string-array name="expense">
+        <item>Коммунальные услуги</item>
+        <item>Образование</item>
+        <item>Связь</item>
+        <item>Дом</item>
+        <item>Кафе</item>
+        <item>Продукты</item>
+        <item>Транспорт</item>
+        <item>Здоровье</item>
+        <item>Спорт</item>
+    </string-array>
 </resources>

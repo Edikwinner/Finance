@@ -7,9 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.finance.R;
 import com.example.finance.database.HistoryDatabase;
+import com.example.finance.recyclerview.HistoryItem;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +71,44 @@ public class HomeScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_home_screen, container, false);
+        StringBuilder balanceText = new StringBuilder().append(getResources().getString(R.string.balance)).append(": \n");
+        List<HistoryItem> items =  db.historyItemDAO().getAll();
+        double rubleBalance = 0;
+        double dollarBalance = 0;
+        double euroBalance = 0;
+        for (int i = 0;i < items.size();i++){
+            switch (items.get(i).getOperationCurrency()){
+                case "$":
+                    if(items.get(i).getIncome()) {
+                        dollarBalance += Double.parseDouble(items.get(i).getOperationCost());
+                    }
+                    else{
+                        dollarBalance -= Double.parseDouble(items.get(i).getOperationCost());
+                    }
+                    break;
+                case "₽":
+                    if(items.get(i).getIncome()) {
+                        rubleBalance += Double.parseDouble(items.get(i).getOperationCost());
+                    }
+                    else{
+                        rubleBalance -= Double.parseDouble(items.get(i).getOperationCost());
+                    }
+                    break;
+                case "€":
+                    if(items.get(i).getIncome()) {
+                         euroBalance += Double.parseDouble(items.get(i).getOperationCost());
+                    }
+                    else{
+                        euroBalance -= Double.parseDouble(items.get(i).getOperationCost());
+                    }
+                    break;
+            }
+        }
+
+        balanceText.append(Math.ceil(rubleBalance * 100) / 100).append(" ₽").append('\n');
+        balanceText.append(Math.ceil(dollarBalance * 100) / 100).append(" $").append('\n');
+        balanceText.append(Math.ceil(euroBalance * 100) / 100).append(" €");
+
         RootView.findViewById(R.id.to_add_fragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +122,10 @@ public class HomeScreenFragment extends Fragment {
                         .commit();
             }
         });
+
+        TextView balance = RootView.findViewById(R.id.balance);
+        balance.setText(balanceText.toString());
+
         return RootView;
     }
 }
