@@ -9,13 +9,5 @@
         android:id="@+id/history_screen"
         android:icon="@drawable/history"
         android:title="@string/history_screen"/>
-    <item
-        android:id="@+id/diagram_screen"
-        android:icon="@drawable/diagram"
-        android:title="@string/diagram_screen"/>
-    <item
-        android:id="@+id/settings_screen"
-        android:icon="@drawable/settings"
-        android:title="@string/settings_screen"/>
 
 </menu>

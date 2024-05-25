@@ -27,24 +27,10 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 
 
 //TODO Нормальный интерфейс
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddRecordFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddRecordFragment extends Fragment {
 
     private HistoryDatabase db;
 
-    public AddRecordFragment() {
-    }
-
-    public static AddRecordFragment newInstance() {
-        AddRecordFragment fragment = new AddRecordFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

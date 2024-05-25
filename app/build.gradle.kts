@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    `maven-publish`
 }
 
 android {
@@ -32,13 +33,14 @@ android {
 }
 
 dependencies {
+    implementation ("com.github.lecho:hellocharts-library:1.5.8@aar")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation ("com.google.android.material:material:1.11.0")
-    implementation("androidx.room:room-ktx:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    implementation(libs.material)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
