@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-    implementation ("com.github.lecho:hellocharts-library:1.5.8@aar")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

@@ -23,14 +23,21 @@
     <string name="total_income">Total income</string>
     <string name="total_expense">Total expense</string>
     <string-array name="income">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>Salary</item>
+        <item>Dividends</item>
+        <item>Gift</item>
+        <item>Payment of deposit</item>
     </string-array>
     <string-array name="expense">
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
+        <item>Communal services</item>
+        <item>Education</item>
+        <item>Communications</item>
+        <item>Home</item>
+        <item>Cafes</item>
+        <item>Food</item>
+        <item>Transportation</item>
+        <item>Health</item>
+        <item>Sport</item>
     </string-array>
     <string-array name="currency" translatable="false">
         <item>₽</item>

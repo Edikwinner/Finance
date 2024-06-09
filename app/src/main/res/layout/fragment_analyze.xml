@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"/>
     </com.google.android.material.tabs.TabLayout>
     <com.google.android.material.textview.MaterialTextView
+        android:layout_marginTop="10dp"
         android:textSize="32sp"
         android:gravity="center"
         android:id="@+id/total_sum"
