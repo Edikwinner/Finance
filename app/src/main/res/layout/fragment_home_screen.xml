@@ -6,22 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeScreenFragment"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:gravity="center">
    <TextView
+       android:textStyle="bold"
        android:textSize="28sp"
        android:id="@+id/balance"
        android:gravity="center"
        android:layout_gravity="center"
        android:layout_width="wrap_content"
-       android:layout_height="0dp"
-       android:layout_weight="1"/>
-
-   <com.google.android.material.floatingactionbutton.FloatingActionButton
-       android:layout_gravity="center"
-       android:id="@+id/to_add_fragment"
-       android:src="@drawable/add"
-       android:layout_width="wrap_content"
-       android:layout_height="0dp"
-       android:layout_weight="1"/>
+       android:layout_height="wrap_content"/>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+     <TextView
+         android:gravity="center"
+         android:textSize="22sp"
+         android:id="@+id/total_income"
+         android:layout_weight="1"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"/>
+     <TextView
+         android:gravity="center"
+         android:textSize="22sp"
+         android:id="@+id/total_expense"
+         android:layout_weight="1"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"/>
+  </LinearLayout>
 
 </LinearLayout>

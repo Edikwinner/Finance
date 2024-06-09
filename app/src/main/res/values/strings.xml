@@ -19,6 +19,9 @@
     <string name="incorrect_input">Enter corrent value</string>
     <string name="undo">Undo</string>
     <string name="snackbar_title">Element deleted</string>
+    <string name="stat">Statistics</string>
+    <string name="total_income">Total income</string>
+    <string name="total_expense">Total expense</string>
     <string-array name="income">
         <item>1</item>
         <item>2</item>
@@ -34,6 +37,7 @@
         <item>$</item>
         <item>€</item>
     </string-array>
-    
-    
+
+
+
 </resources>

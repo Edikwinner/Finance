@@ -3,12 +3,11 @@ package com.example.finance.database;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
-import androidx.room.DeleteTable;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.finance.recyclerview.HistoryItem;
+import com.example.finance.data.HistoryItem;
 
 import java.util.List;
 

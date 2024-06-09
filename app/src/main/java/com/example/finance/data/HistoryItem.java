@@ -1,4 +1,4 @@
-package com.example.finance.recyclerview;
+package com.example.finance.data;
 
 
 import androidx.room.Entity;
@@ -9,6 +9,7 @@ public class HistoryItem {
     @PrimaryKey(autoGenerate = true)
     public int id;
     private Boolean income;
+    private String operationDescription;
     private String operationName;
     private String operationCost;
     private String operationDate;
@@ -44,6 +45,10 @@ public class HistoryItem {
         this.operationCurrency = operationCurrency;
     }
 
+    public void setOperationDescription(String operationDescription) {
+        this.operationDescription = operationDescription;
+    }
+
     public String getOperationName() {
         return operationName;
     }
@@ -62,5 +67,9 @@ public class HistoryItem {
 
     public String getOperationCurrency() {
         return operationCurrency;
+    }
+
+    public String getOperationDescription() {
+        return operationDescription;
     }
 }

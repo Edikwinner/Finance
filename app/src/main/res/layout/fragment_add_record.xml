@@ -2,36 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.AddRecordFragment"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="30dp">
-  <com.google.android.material.button.MaterialButtonToggleGroup
-      android:layout_width="wrap_content"
+    android:gravity="center_horizontal">
+  <com.google.android.material.tabs.TabLayout
+      android:id="@+id/tab_layout"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
       app:singleSelection="true"
       android:layout_marginBottom="40dp">
-      <com.google.android.material.button.MaterialButton
+      <com.google.android.material.tabs.TabItem
 
           android:textSize="24sp"
           android:id="@+id/income"
           android:gravity="center"
           android:text="@string/income"
-          style="@style/Widget.Material3.Button.OutlinedButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"/>
-     <Button
+     <com.google.android.material.tabs.TabItem
          android:textSize="24sp"
          android:id="@+id/expense"
          android:gravity="center"
          android:text="@string/expense"
-         style="@style/Widget.Material3.Button.OutlinedButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"/>
-  </com.google.android.material.button.MaterialButtonToggleGroup>
+  </com.google.android.material.tabs.TabLayout>
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -45,7 +43,8 @@
         android:id="@+id/sum"
         android:digits="1234567890."
         android:maxLength="10"
-        android:layout_width="140dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/sum" />
     <Spinner
@@ -55,7 +54,7 @@
   </LinearLayout>
   <Spinner
       android:id="@+id/category"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="40dp"/>
   <Button
@@ -65,17 +64,18 @@
       android:layout_height="wrap_content"
       android:hint="@string/choose_date"
       android:layout_marginBottom="40dp"/>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"/>
   <LinearLayout
+      android:paddingHorizontal="50dp"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       android:gravity="center">
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:layout_marginEnd="20dp"/>
+
     <Button
         android:id="@+id/add_record"
         android:layout_width="wrap_content"

@@ -3,7 +3,6 @@ package com.example.finance.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,10 +18,12 @@ import android.widget.Toast;
 
 import com.example.finance.R;
 import com.example.finance.database.HistoryDatabase;
-import com.example.finance.recyclerview.HistoryItem;
+import com.example.finance.data.HistoryItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 
 
 //TODO Нормальный интерфейс
@@ -60,25 +60,32 @@ public class AddRecordFragment extends Fragment {
         HistoryItem item = new HistoryItem();
         item.setIncome(true);
 
-        MaterialButton income = RootView.findViewById(R.id.income);
-        income.setChecked(true);
-        MaterialButton expense = RootView.findViewById(R.id.expense);
-        income.setOnClickListener(new View.OnClickListener() {
+        TabLayout tabLayout = RootView.findViewById(R.id.tab_layout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                item.setIncome(true);
-                ArrayAdapter<?> categoryAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.income, android.R.layout.simple_spinner_item);
-                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                category.setAdapter(categoryAdapter);
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition() == 0){
+                    item.setIncome(true);
+                    ArrayAdapter<?> categoryAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.income, android.R.layout.simple_spinner_item);
+                    categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    category.setAdapter(categoryAdapter);
+                }
+                else if (tab.getPosition() == 1){
+                    item.setIncome(false);
+                    ArrayAdapter<?> categoryAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.expense, android.R.layout.simple_spinner_item);
+                    categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    category.setAdapter(categoryAdapter);
+                }
             }
-        });
-        expense.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                item.setIncome(false);
-                ArrayAdapter<?> categoryAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.expense, android.R.layout.simple_spinner_item);
-                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                category.setAdapter(categoryAdapter);
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
@@ -135,22 +142,11 @@ public class AddRecordFragment extends Fragment {
                 datePicker.show(getFragmentManager(), "");
             }
         });
-        RootView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HomeScreenFragment homeScreenFragment = new HomeScreenFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Database", db);
-                homeScreenFragment.setArguments(bundle);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container,homeScreenFragment)
-                        .commit();
-            }
-        });
         RootView.findViewById(R.id.add_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 item.setOperationCost(sum.getText().toString());
+                sum.setText("");
                 if(item.getOperationDate() == null){
                     Toast.makeText(getContext(), getResources().getText(R.string.input_error), Toast.LENGTH_SHORT).show();
                 }

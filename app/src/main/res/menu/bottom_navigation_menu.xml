@@ -6,8 +6,16 @@
         android:icon="@drawable/home"
         android:title="@string/home_screen"/>
     <item
+        android:id="@+id/add_screen"
+        android:icon="@drawable/add"/>
+    <item
         android:id="@+id/history_screen"
         android:icon="@drawable/history"
         android:title="@string/history_screen"/>
+    <item
+        android:id="@+id/analyze_screen"
+        android:title="@string/stat"
+        android:icon="@drawable/stat"/>
+
 
 </menu>

@@ -16,10 +16,13 @@
     <string name="yes">Да</string>
     <string name="alert_dialog_title">Подтверждение</string>
     <string name="alert_dialog_message">Вы уверены что хотите удалить все записи?</string>
-    <string name="balance">Баланс</string>
+    <string name="balance">Ваш текущий баланс</string>
     <string name="incorrect_input">Введите корректное значение</string>
     <string name="undo">Отменить</string>
     <string name="snackbar_title">Элемент удален</string>
+    <string name="total_income">Доход за все время</string>
+    <string name="total_expense">Расход за все время</string>
+    <string name="stat">Статистика</string>
     <string-array name="income">
         <item>Заработная плата</item>
         <item>Дивиденды</item>

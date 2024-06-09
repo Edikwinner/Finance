@@ -3,7 +3,7 @@ package com.example.finance.database;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-import com.example.finance.recyclerview.HistoryItem;
+import com.example.finance.data.HistoryItem;
 
 import java.io.Serializable;
 

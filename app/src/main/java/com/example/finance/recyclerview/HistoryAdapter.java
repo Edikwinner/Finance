@@ -1,7 +1,7 @@
 package com.example.finance.recyclerview;
 
-import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finance.R;
+import com.example.finance.data.HistoryItem;
 
 import java.util.List;
 
@@ -44,6 +44,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             holder.operation_cost.setTextColor(Color.parseColor("#D50000"));
             holder.operation_cost.setText("-" + item.getOperationCost() + " " + item.getOperationCurrency());
         }
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("TAG", position + "");
+            }
+        });
     }
 
     @Override
